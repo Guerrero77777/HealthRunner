@@ -1,6 +1,6 @@
 ﻿namespace HealthRunner.Administrador
 {
-    partial class btnVolver
+    partial class FrmPanelAdmin
     {
         /// <summary>
         /// Required designer variable.
@@ -88,7 +88,6 @@
             this.btnAtras.TabIndex = 7;
             this.btnAtras.Text = "Volver";
             this.btnAtras.UseVisualStyleBackColor = false;
-            this.btnAtras.Click += new System.EventHandler(this.button7_Click);
             // 
             // btnActualizar
             // 
@@ -234,7 +233,7 @@
             this.lblRegistro.TabIndex = 16;
             this.lblRegistro.Text = "Panel de Administrador";
             // 
-            // btnVolver
+            // FrmPanelAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -245,10 +244,10 @@
             this.Controls.Add(this.lblRegistro);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "btnVolver";
+            this.Name = "FrmPanelAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmPanelAdmin";
-            this.Load += new System.EventHandler(this.btnVolver_Load);
+            this.Load += new System.EventHandler(this.FrmPanelAdmin_Load_1);
             this.pnlRegistro.ResumeLayout(false);
             this.pnlRegistro.PerformLayout();
             this.panel1.ResumeLayout(false);
