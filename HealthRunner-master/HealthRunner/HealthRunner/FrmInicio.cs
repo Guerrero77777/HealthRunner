@@ -1,9 +1,11 @@
 ﻿using HealthRunner.Administrador;
+using HealthRunner.Model;
 using HealthRunner.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -35,7 +37,7 @@ namespace HealthRunner
 
         private void FrmInicio_Shown(object sender, EventArgs e)
         {
-            //  Truco seguro: quitar el foco del control activo después de cargar
+            // Truco seguro: quitar el foco del control activo después de cargar
             BeginInvoke((Action)(() =>
             {
                 this.ActiveControl = null; // fuerza que ningún control tenga foco
@@ -76,15 +78,9 @@ namespace HealthRunner
                 txt.UseSystemPasswordChar = false;
         }
 
-       
-        
-            
-      
-     
-
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
-            // Verificar campos vacíos
+            // Validar campos vacíos
             if (string.IsNullOrWhiteSpace(txtCorreo.Text) || txtCorreo.Text == "Ingrese su correo")
             {
                 MessageBox.Show("Por favor ingrese su correo electrónico.", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -99,21 +95,86 @@ namespace HealthRunner
                 return;
             }
 
-            // Simulación de usuario (más adelante se reemplaza por BD)
-            string correoDemo = "prueba@gmail.com";
-            string passDemo = "G12345678";
-
-            if (txtCorreo.Text == correoDemo && txtPassword.Text == passDemo)
+            try
             {
-                MessageBox.Show("¡Inicio de sesión exitoso! Bienvenido a HealthRunner 💪", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using (SqlConnection conn = new SqlConnection("Data Source=localhost;Initial Catalog=HealthRunnerDB;Integrated Security=True"))
+                {
+                    conn.Open();
 
-                FrmPerfilUsuario frmPerfil = new FrmPerfilUsuario();
-                frmPerfil.Show();
-                this.Hide();
+                    string query = @"
+                        SELECT u.IdUsuario, u.CorreoElectronico, r.NombreRol 
+                        FROM Usuarios u
+                        INNER JOIN Roles r ON u.IdRol = r.IdRol
+                        WHERE u.CorreoElectronico = @correo AND u.PasswordHash = @password";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@correo", txtCorreo.Text.Trim());
+                        cmd.Parameters.AddWithValue("@password", txtPassword.Text.Trim());
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            string rol = reader["NombreRol"].ToString();
+                            int idUsuario = Convert.ToInt32(reader["IdUsuario"]);
+
+                            reader.Close();
+                            RegistrarLogAcceso(idUsuario, true);
+
+                            MessageBox.Show("Inicio de sesión exitoso ✅", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Redirigir según el rol
+                            if (rol == "Administrador")
+                            {
+                                FrmPanelAdmin frm = new FrmPanelAdmin();
+                                frm.Show();
+                                this.Hide();
+                            }
+                            else if (rol == "UsuarioFinal")
+                            {
+                                FrmPerfilUsuario frm = new FrmPerfilUsuario();
+                                frm.Show();
+                                this.Hide();
+                            }
+                        }
+                        else
+                        {
+                            reader.Close();
+                            RegistrarLogAcceso(0, false);
+
+                            MessageBox.Show("Correo o contraseña incorrectos.", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Correo o contraseña incorrectos.\nVerifique sus datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al conectar con la base de datos:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void RegistrarLogAcceso(int idUsuario, bool exitoso)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection("Data Source=localhost;Initial Catalog=HealthRunnerDB;Integrated Security=True"))
+                {
+                    conn.Open();
+                    string insertLog = @"INSERT INTO LogsAcceso (IdUsuario, FechaIntento, Exitoso, IP)
+                                         VALUES (@idUsuario, GETDATE(), @exitoso, HOST_NAME())";
+
+                    using (SqlCommand cmd = new SqlCommand(insertLog, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idUsuario", idUsuario == 0 ? DBNull.Value : idUsuario);
+                        cmd.Parameters.AddWithValue("@exitoso", exitoso ? 1 : 0);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+                // Evita que un fallo en log interrumpa el flujo del login
             }
         }
 
@@ -130,8 +191,22 @@ namespace HealthRunner
             frmAdmin.Show();
             this.Hide();
         }
+
+        private void btnConexionDB_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection("Data Source=localhost;Initial Catalog=HealthRunnerDB;Integrated Security=True"))
+                {
+                    conn.Open();
+                    MessageBox.Show("✅ Conexión exitosa con SQL Server", "Prueba", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Error de conexión: " + ex.Message, "Prueba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
-
-
 

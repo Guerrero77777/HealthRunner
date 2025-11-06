@@ -32,8 +32,8 @@
             this.tblTop = new System.Windows.Forms.TableLayoutPanel();
             this.picFotoPerfil = new System.Windows.Forms.PictureBox();
             this.grpDatosPersonales = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.cmbGenero = new System.Windows.Forms.ComboBox();
+            this.dateTimeFecha = new System.Windows.Forms.DateTimePicker();
             this.txtTelefono = new System.Windows.Forms.TextBox();
             this.lblTelefono = new System.Windows.Forms.Label();
             this.lblGenero = new System.Windows.Forms.Label();
@@ -133,8 +133,8 @@
             // 
             // grpDatosPersonales
             // 
-            this.grpDatosPersonales.Controls.Add(this.comboBox1);
-            this.grpDatosPersonales.Controls.Add(this.dateTimePicker1);
+            this.grpDatosPersonales.Controls.Add(this.cmbGenero);
+            this.grpDatosPersonales.Controls.Add(this.dateTimeFecha);
             this.grpDatosPersonales.Controls.Add(this.txtTelefono);
             this.grpDatosPersonales.Controls.Add(this.lblTelefono);
             this.grpDatosPersonales.Controls.Add(this.lblGenero);
@@ -156,20 +156,20 @@
             this.grpDatosPersonales.TabStop = false;
             this.grpDatosPersonales.Text = " Perfil Personal";
             // 
-            // comboBox1
+            // cmbGenero
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(376, 60);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(197, 21);
-            this.comboBox1.TabIndex = 19;
+            this.cmbGenero.FormattingEnabled = true;
+            this.cmbGenero.Location = new System.Drawing.Point(376, 60);
+            this.cmbGenero.Name = "cmbGenero";
+            this.cmbGenero.Size = new System.Drawing.Size(197, 21);
+            this.cmbGenero.TabIndex = 19;
             // 
-            // dateTimePicker1
+            // dateTimeFecha
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(376, 28);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(197, 20);
-            this.dateTimePicker1.TabIndex = 18;
+            this.dateTimeFecha.Location = new System.Drawing.Point(376, 28);
+            this.dateTimeFecha.Name = "dateTimeFecha";
+            this.dateTimeFecha.Size = new System.Drawing.Size(197, 20);
+            this.dateTimeFecha.TabIndex = 18;
             // 
             // txtTelefono
             // 
@@ -485,6 +485,7 @@
             this.grpProgreso.TabIndex = 2;
             this.grpProgreso.TabStop = false;
             this.grpProgreso.Text = "Progreso y Logros";
+            this.grpProgreso.Enter += new System.EventHandler(this.grpProgreso_Enter);
             // 
             // btnCerrarSesion
             // 
@@ -668,7 +669,7 @@
         private System.Windows.Forms.Button btnCerrarSesion;
         private System.Windows.Forms.Button btnHistorial;
         private System.Windows.Forms.Button btnActualizar;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DateTimePicker dateTimeFecha;
+        private System.Windows.Forms.ComboBox cmbGenero;
     }
 }

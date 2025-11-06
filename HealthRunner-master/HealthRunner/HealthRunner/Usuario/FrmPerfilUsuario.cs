@@ -36,9 +36,9 @@ namespace HealthRunner
             txtNombre.Text = usuarioActual.NombreCompleto;
             txtCorreo.Text = usuarioActual.Correo;
             txtNivel.Text = usuarioActual.NivelActividad;
-            txtGenero.Text = usuarioActual.Genero;
+            cmbGenero.Text = usuarioActual.Genero;
             txtTelefono.Text = usuarioActual.Telefono;
-            txtFechaNacimiento.Text = usuarioActual.FechaNacimiento.ToShortDateString();
+            dateTimeFecha.Text = usuarioActual.FechaNacimiento.ToShortDateString();
         }
 
         private void CargarEstadisticas()
@@ -111,6 +111,11 @@ namespace HealthRunner
                 frmInicio.Show();
                 this.Close();
             }
+        }
+
+        private void grpProgreso_Enter(object sender, EventArgs e)
+        {
+
         }
     }
     

@@ -58,6 +58,8 @@
     <Compile Include="Administrador\FrmRegistroAdmin.Designer.cs">
       <DependentUpon>FrmRegistroAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConexionDB.cs" />
+    <Compile Include="Models\FactoryHR.cs" />
     <Compile Include="Usuario\FrmPerfilUsuario.cs">
       <SubType>Form</SubType>
     </Compile>

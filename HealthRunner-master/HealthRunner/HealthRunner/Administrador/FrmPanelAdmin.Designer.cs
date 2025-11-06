@@ -30,7 +30,7 @@
         {
             this.pnlRegistro = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button7 = new System.Windows.Forms.Button();
+            this.btnAtras = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
@@ -42,7 +42,7 @@
             this.ROL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GÉNERO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TELÉFONO = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.pictureBoxRunner = new System.Windows.Forms.PictureBox();
             this.lblRegistro = new System.Windows.Forms.Label();
@@ -57,7 +57,7 @@
             this.pnlRegistro.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlRegistro.Controls.Add(this.panel1);
             this.pnlRegistro.Controls.Add(this.dgvUsuarios);
-            this.pnlRegistro.Controls.Add(this.button1);
+            this.pnlRegistro.Controls.Add(this.btnBuscar);
             this.pnlRegistro.Controls.Add(this.txtBuscar);
             this.pnlRegistro.Location = new System.Drawing.Point(217, 71);
             this.pnlRegistro.Name = "pnlRegistro";
@@ -66,7 +66,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button7);
+            this.panel1.Controls.Add(this.btnAtras);
             this.panel1.Controls.Add(this.btnActualizar);
             this.panel1.Controls.Add(this.btnEliminar);
             this.panel1.Controls.Add(this.btnEditar);
@@ -77,18 +77,18 @@
             this.panel1.Size = new System.Drawing.Size(174, 295);
             this.panel1.TabIndex = 3;
             // 
-            // button7
+            // btnAtras
             // 
-            this.button7.BackColor = System.Drawing.Color.LightGray;
-            this.button7.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(16, 217);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(130, 35);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Volver";
-            this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.btnAtras.BackColor = System.Drawing.Color.LightGray;
+            this.btnAtras.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAtras.ForeColor = System.Drawing.Color.White;
+            this.btnAtras.Location = new System.Drawing.Point(16, 217);
+            this.btnAtras.Name = "btnAtras";
+            this.btnAtras.Size = new System.Drawing.Size(130, 35);
+            this.btnAtras.TabIndex = 7;
+            this.btnAtras.Text = "Volver";
+            this.btnAtras.UseVisualStyleBackColor = false;
+            this.btnAtras.Click += new System.EventHandler(this.button7_Click);
             // 
             // btnActualizar
             // 
@@ -195,17 +195,17 @@
             this.TELÉFONO.HeaderText = "TELÉFONO";
             this.TELÉFONO.Name = "TELÉFONO";
             // 
-            // button1
+            // btnBuscar
             // 
-            this.button1.BackColor = System.Drawing.Color.MediumSeaGreen;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(457, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 35);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Buscar";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnBuscar.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.Location = new System.Drawing.Point(457, 31);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(93, 35);
+            this.btnBuscar.TabIndex = 1;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = false;
             // 
             // txtBuscar
             // 
@@ -248,6 +248,7 @@
             this.Name = "btnVolver";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmPanelAdmin";
+            this.Load += new System.EventHandler(this.btnVolver_Load);
             this.pnlRegistro.ResumeLayout(false);
             this.pnlRegistro.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -263,7 +264,7 @@
         private System.Windows.Forms.Panel pnlRegistro;
         private System.Windows.Forms.PictureBox pictureBoxRunner;
         private System.Windows.Forms.Label lblRegistro;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.DataGridView dgvUsuarios;
         private System.Windows.Forms.DataGridViewTextBoxColumn NOMBRE;
@@ -272,7 +273,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn GÉNERO;
         private System.Windows.Forms.DataGridViewTextBoxColumn TELÉFONO;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btnAtras;
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnEditar;

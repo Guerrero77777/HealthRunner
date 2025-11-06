@@ -38,6 +38,7 @@
             this.lblCorreo = new System.Windows.Forms.Label();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.pictureBoxRunner = new System.Windows.Forms.PictureBox();
+            this.btnConexionDB = new System.Windows.Forms.Button();
             this.pnlLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRunner)).BeginInit();
             this.SuspendLayout();
@@ -150,12 +151,25 @@
             this.pictureBoxRunner.TabIndex = 4;
             this.pictureBoxRunner.TabStop = false;
             // 
+            // btnConexionDB
+            // 
+            this.btnConexionDB.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnConexionDB.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConexionDB.Location = new System.Drawing.Point(58, 333);
+            this.btnConexionDB.Name = "btnConexionDB";
+            this.btnConexionDB.Size = new System.Drawing.Size(114, 32);
+            this.btnConexionDB.TabIndex = 6;
+            this.btnConexionDB.Text = "ConexionDB";
+            this.btnConexionDB.UseVisualStyleBackColor = false;
+            this.btnConexionDB.Click += new System.EventHandler(this.btnConexionDB_Click);
+            // 
             // FrmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MintCream;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnConexionDB);
             this.Controls.Add(this.pictureBoxRunner);
             this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.lblTitulo);
@@ -187,6 +201,7 @@
         private System.Windows.Forms.Label lblCorreo;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.PictureBox pictureBoxRunner;
+        private System.Windows.Forms.Button btnConexionDB;
     }
 }
 
