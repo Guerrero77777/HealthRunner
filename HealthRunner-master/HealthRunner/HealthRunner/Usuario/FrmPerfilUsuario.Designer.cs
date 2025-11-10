@@ -30,7 +30,6 @@
         {
             this.tblMain = new System.Windows.Forms.TableLayoutPanel();
             this.tblTop = new System.Windows.Forms.TableLayoutPanel();
-            this.picFotoPerfil = new System.Windows.Forms.PictureBox();
             this.grpDatosPersonales = new System.Windows.Forms.GroupBox();
             this.cmbGenero = new System.Windows.Forms.ComboBox();
             this.dateTimeFecha = new System.Windows.Forms.DateTimePicker();
@@ -38,7 +37,6 @@
             this.lblTelefono = new System.Windows.Forms.Label();
             this.lblGenero = new System.Windows.Forms.Label();
             this.lblFecha = new System.Windows.Forms.Label();
-            this.txtMetas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtNivel = new System.Windows.Forms.TextBox();
             this.lblNivel = new System.Windows.Forms.Label();
@@ -51,30 +49,36 @@
             this.tblEstadistica = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
-            this.lblFrecuencias = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
-            this.lblCalorias = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblKilometros = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblPaos = new System.Windows.Forms.Label();
-            this.lblPasos = new System.Windows.Forms.Label();
             this.grpProgreso = new System.Windows.Forms.GroupBox();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.btnHistorial = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.flowInsignias = new System.Windows.Forms.FlowLayoutPanel();
-            this.picOro = new System.Windows.Forms.PictureBox();
-            this.picPlata = new System.Windows.Forms.PictureBox();
-            this.picBronce = new System.Windows.Forms.PictureBox();
             this.lblProgreso = new System.Windows.Forms.Label();
             this.progressExperiencia = new System.Windows.Forms.ProgressBar();
             this.lblNivelActual = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtPasos = new System.Windows.Forms.TextBox();
+            this.txtKilometros = new System.Windows.Forms.TextBox();
+            this.txtCalorias = new System.Windows.Forms.TextBox();
+            this.txtFrecuencia = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbMetas = new System.Windows.Forms.ComboBox();
+            this.picFotoPerfil = new System.Windows.Forms.PictureBox();
+            this.picOro = new System.Windows.Forms.PictureBox();
+            this.picPlata = new System.Windows.Forms.PictureBox();
+            this.picBronce = new System.Windows.Forms.PictureBox();
             this.tblMain.SuspendLayout();
             this.tblTop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picFotoPerfil)).BeginInit();
             this.grpDatosPersonales.SuspendLayout();
             this.grpEstadistica.SuspendLayout();
             this.tblEstadistica.SuspendLayout();
@@ -84,6 +88,7 @@
             this.panel1.SuspendLayout();
             this.grpProgreso.SuspendLayout();
             this.flowInsignias.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOro)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPlata)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBronce)).BeginInit();
@@ -121,25 +126,16 @@
             this.tblTop.Size = new System.Drawing.Size(794, 184);
             this.tblTop.TabIndex = 0;
             // 
-            // picFotoPerfil
-            // 
-            this.picFotoPerfil.Image = global::HealthRunner.Properties.Resources.avata;
-            this.picFotoPerfil.Location = new System.Drawing.Point(3, 3);
-            this.picFotoPerfil.Name = "picFotoPerfil";
-            this.picFotoPerfil.Size = new System.Drawing.Size(150, 145);
-            this.picFotoPerfil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picFotoPerfil.TabIndex = 0;
-            this.picFotoPerfil.TabStop = false;
-            // 
             // grpDatosPersonales
             // 
+            this.grpDatosPersonales.Controls.Add(this.cmbMetas);
+            this.grpDatosPersonales.Controls.Add(this.comboBox1);
             this.grpDatosPersonales.Controls.Add(this.cmbGenero);
             this.grpDatosPersonales.Controls.Add(this.dateTimeFecha);
             this.grpDatosPersonales.Controls.Add(this.txtTelefono);
             this.grpDatosPersonales.Controls.Add(this.lblTelefono);
             this.grpDatosPersonales.Controls.Add(this.lblGenero);
             this.grpDatosPersonales.Controls.Add(this.lblFecha);
-            this.grpDatosPersonales.Controls.Add(this.txtMetas);
             this.grpDatosPersonales.Controls.Add(this.label2);
             this.grpDatosPersonales.Controls.Add(this.txtNivel);
             this.grpDatosPersonales.Controls.Add(this.lblNivel);
@@ -209,15 +205,6 @@
             this.lblFecha.Size = new System.Drawing.Size(76, 17);
             this.lblFecha.TabIndex = 12;
             this.lblFecha.Text = "Fecha Nac:";
-            // 
-            // txtMetas
-            // 
-            this.txtMetas.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMetas.Location = new System.Drawing.Point(73, 119);
-            this.txtMetas.Name = "txtMetas";
-            this.txtMetas.ReadOnly = true;
-            this.txtMetas.Size = new System.Drawing.Size(197, 23);
-            this.txtMetas.TabIndex = 11;
             // 
             // label2
             // 
@@ -330,8 +317,9 @@
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.txtFrecuencia);
+            this.panel4.Controls.Add(this.label8);
             this.panel4.Controls.Add(this.label6);
-            this.panel4.Controls.Add(this.lblFrecuencias);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(601, 10);
             this.panel4.Margin = new System.Windows.Forms.Padding(10);
@@ -344,29 +332,17 @@
             this.label6.AutoSize = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(0, 17);
+            this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(0, 30);
             this.label6.TabIndex = 1;
             // 
-            // lblFrecuencias
-            // 
-            this.lblFrecuencias.AutoSize = true;
-            this.lblFrecuencias.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblFrecuencias.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFrecuencias.Location = new System.Drawing.Point(0, 0);
-            this.lblFrecuencias.MaximumSize = new System.Drawing.Size(0, 25);
-            this.lblFrecuencias.Name = "lblFrecuencias";
-            this.lblFrecuencias.Size = new System.Drawing.Size(72, 17);
-            this.lblFrecuencias.TabIndex = 0;
-            this.lblFrecuencias.Text = "Frecuencia";
-            this.lblFrecuencias.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.txtCalorias);
+            this.panel3.Controls.Add(this.label7);
             this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.lblCalorias);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(404, 10);
             this.panel3.Margin = new System.Windows.Forms.Padding(10);
@@ -379,29 +355,17 @@
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(0, 17);
+            this.label4.Location = new System.Drawing.Point(0, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(0, 30);
             this.label4.TabIndex = 1;
             // 
-            // lblCalorias
-            // 
-            this.lblCalorias.AutoSize = true;
-            this.lblCalorias.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblCalorias.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCalorias.Location = new System.Drawing.Point(0, 0);
-            this.lblCalorias.MaximumSize = new System.Drawing.Size(0, 25);
-            this.lblCalorias.Name = "lblCalorias";
-            this.lblCalorias.Size = new System.Drawing.Size(55, 17);
-            this.lblCalorias.TabIndex = 0;
-            this.lblCalorias.Text = "Calorias";
-            this.lblCalorias.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.txtKilometros);
+            this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.lblKilometros);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(207, 10);
             this.panel2.Margin = new System.Windows.Forms.Padding(10);
@@ -414,29 +378,17 @@
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(0, 17);
+            this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 30);
             this.label1.TabIndex = 1;
             // 
-            // lblKilometros
-            // 
-            this.lblKilometros.AutoSize = true;
-            this.lblKilometros.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblKilometros.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblKilometros.Location = new System.Drawing.Point(0, 0);
-            this.lblKilometros.MaximumSize = new System.Drawing.Size(0, 25);
-            this.lblKilometros.Name = "lblKilometros";
-            this.lblKilometros.Size = new System.Drawing.Size(73, 17);
-            this.lblKilometros.TabIndex = 0;
-            this.lblKilometros.Text = "Kilometros";
-            this.lblKilometros.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.txtPasos);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.lblPaos);
-            this.panel1.Controls.Add(this.lblPasos);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(10, 10);
             this.panel1.Margin = new System.Windows.Forms.Padding(10);
@@ -449,23 +401,10 @@
             this.lblPaos.AutoSize = true;
             this.lblPaos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPaos.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPaos.Location = new System.Drawing.Point(0, 17);
+            this.lblPaos.Location = new System.Drawing.Point(0, 0);
             this.lblPaos.Name = "lblPaos";
             this.lblPaos.Size = new System.Drawing.Size(0, 30);
             this.lblPaos.TabIndex = 1;
-            // 
-            // lblPasos
-            // 
-            this.lblPasos.AutoSize = true;
-            this.lblPasos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPasos.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPasos.Location = new System.Drawing.Point(0, 0);
-            this.lblPasos.MaximumSize = new System.Drawing.Size(0, 25);
-            this.lblPasos.Name = "lblPasos";
-            this.lblPasos.Size = new System.Drawing.Size(43, 17);
-            this.lblPasos.TabIndex = 0;
-            this.lblPasos.Text = "Pasos";
-            this.lblPasos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // grpProgreso
             // 
@@ -485,7 +424,6 @@
             this.grpProgreso.TabIndex = 2;
             this.grpProgreso.TabStop = false;
             this.grpProgreso.Text = "Progreso y Logros";
-            this.grpProgreso.Enter += new System.EventHandler(this.grpProgreso_Enter);
             // 
             // btnCerrarSesion
             // 
@@ -534,33 +472,6 @@
             this.flowInsignias.Size = new System.Drawing.Size(227, 80);
             this.flowInsignias.TabIndex = 3;
             // 
-            // picOro
-            // 
-            this.picOro.Location = new System.Drawing.Point(8, 8);
-            this.picOro.Name = "picOro";
-            this.picOro.Size = new System.Drawing.Size(64, 64);
-            this.picOro.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picOro.TabIndex = 0;
-            this.picOro.TabStop = false;
-            // 
-            // picPlata
-            // 
-            this.picPlata.Location = new System.Drawing.Point(78, 8);
-            this.picPlata.Name = "picPlata";
-            this.picPlata.Size = new System.Drawing.Size(64, 64);
-            this.picPlata.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picPlata.TabIndex = 1;
-            this.picPlata.TabStop = false;
-            // 
-            // picBronce
-            // 
-            this.picBronce.Location = new System.Drawing.Point(148, 8);
-            this.picBronce.Name = "picBronce";
-            this.picBronce.Size = new System.Drawing.Size(64, 64);
-            this.picBronce.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picBronce.TabIndex = 2;
-            this.picBronce.TabStop = false;
-            // 
             // lblProgreso
             // 
             this.lblProgreso.AutoSize = true;
@@ -592,6 +503,134 @@
             this.lblNivelActual.Text = "Nivel Actual: 1";
             this.lblNivelActual.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(66, 4);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 15);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Pasos";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(52, 4);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 15);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Kilometros";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(49, 4);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(64, 15);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Frecuencia";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(69, 4);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 15);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Calorias";
+            // 
+            // txtPasos
+            // 
+            this.txtPasos.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPasos.Location = new System.Drawing.Point(30, 34);
+            this.txtPasos.Name = "txtPasos";
+            this.txtPasos.Size = new System.Drawing.Size(100, 27);
+            this.txtPasos.TabIndex = 8;
+            // 
+            // txtKilometros
+            // 
+            this.txtKilometros.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilometros.Location = new System.Drawing.Point(36, 34);
+            this.txtKilometros.Name = "txtKilometros";
+            this.txtKilometros.Size = new System.Drawing.Size(100, 27);
+            this.txtKilometros.TabIndex = 9;
+            // 
+            // txtCalorias
+            // 
+            this.txtCalorias.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCalorias.Location = new System.Drawing.Point(34, 34);
+            this.txtCalorias.Name = "txtCalorias";
+            this.txtCalorias.Size = new System.Drawing.Size(100, 27);
+            this.txtCalorias.TabIndex = 9;
+            // 
+            // txtFrecuencia
+            // 
+            this.txtFrecuencia.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFrecuencia.Location = new System.Drawing.Point(37, 34);
+            this.txtFrecuencia.Name = "txtFrecuencia";
+            this.txtFrecuencia.Size = new System.Drawing.Size(100, 27);
+            this.txtFrecuencia.TabIndex = 9;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(288, 164);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(9, 21);
+            this.comboBox1.TabIndex = 20;
+            // 
+            // cmbMetas
+            // 
+            this.cmbMetas.FormattingEnabled = true;
+            this.cmbMetas.Location = new System.Drawing.Point(73, 124);
+            this.cmbMetas.Name = "cmbMetas";
+            this.cmbMetas.Size = new System.Drawing.Size(197, 21);
+            this.cmbMetas.TabIndex = 21;
+            // 
+            // picFotoPerfil
+            // 
+            this.picFotoPerfil.Image = global::HealthRunner.Properties.Resources.avata;
+            this.picFotoPerfil.Location = new System.Drawing.Point(3, 3);
+            this.picFotoPerfil.Name = "picFotoPerfil";
+            this.picFotoPerfil.Size = new System.Drawing.Size(150, 145);
+            this.picFotoPerfil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picFotoPerfil.TabIndex = 0;
+            this.picFotoPerfil.TabStop = false;
+            // 
+            // picOro
+            // 
+            this.picOro.Image = global::HealthRunner.Properties.Resources.picOro;
+            this.picOro.Location = new System.Drawing.Point(8, 8);
+            this.picOro.Name = "picOro";
+            this.picOro.Size = new System.Drawing.Size(64, 64);
+            this.picOro.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picOro.TabIndex = 0;
+            this.picOro.TabStop = false;
+            // 
+            // picPlata
+            // 
+            this.picPlata.Image = global::HealthRunner.Properties.Resources.picPlata;
+            this.picPlata.Location = new System.Drawing.Point(78, 8);
+            this.picPlata.Name = "picPlata";
+            this.picPlata.Size = new System.Drawing.Size(64, 64);
+            this.picPlata.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPlata.TabIndex = 1;
+            this.picPlata.TabStop = false;
+            // 
+            // picBronce
+            // 
+            this.picBronce.Image = global::HealthRunner.Properties.Resources.picBronce1;
+            this.picBronce.Location = new System.Drawing.Point(148, 8);
+            this.picBronce.Name = "picBronce";
+            this.picBronce.Size = new System.Drawing.Size(64, 64);
+            this.picBronce.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picBronce.TabIndex = 2;
+            this.picBronce.TabStop = false;
+            // 
             // FrmPerfilUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -602,7 +641,6 @@
             this.Text = "HealthRunner Perfil Usuario";
             this.tblMain.ResumeLayout(false);
             this.tblTop.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picFotoPerfil)).EndInit();
             this.grpDatosPersonales.ResumeLayout(false);
             this.grpDatosPersonales.PerformLayout();
             this.grpEstadistica.ResumeLayout(false);
@@ -618,6 +656,7 @@
             this.grpProgreso.ResumeLayout(false);
             this.grpProgreso.PerformLayout();
             this.flowInsignias.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picFotoPerfil)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOro)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPlata)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBronce)).EndInit();
@@ -634,7 +673,6 @@
         private System.Windows.Forms.Label lblPerfilPersonal;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.TextBox txtMetas;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtNivel;
         private System.Windows.Forms.Label lblNivel;
@@ -647,17 +685,13 @@
         private System.Windows.Forms.GroupBox grpEstadistica;
         private System.Windows.Forms.TableLayoutPanel tblEstadistica;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label lblPasos;
         private System.Windows.Forms.Label lblPaos;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label lblFrecuencias;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lblCalorias;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblKilometros;
         private System.Windows.Forms.GroupBox grpProgreso;
         private System.Windows.Forms.Label lblNivelActual;
         private System.Windows.Forms.Label lblProgreso;
@@ -671,5 +705,15 @@
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.DateTimePicker dateTimeFecha;
         private System.Windows.Forms.ComboBox cmbGenero;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtFrecuencia;
+        private System.Windows.Forms.TextBox txtCalorias;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtKilometros;
+        private System.Windows.Forms.TextBox txtPasos;
+        private System.Windows.Forms.ComboBox cmbMetas;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

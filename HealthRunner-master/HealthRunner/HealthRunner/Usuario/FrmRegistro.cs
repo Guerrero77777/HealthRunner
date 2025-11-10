@@ -1,8 +1,10 @@
-﻿using HealthRunner.Models;
+﻿using HealthRunner.Model;
+using HealthRunner.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,14 +19,12 @@ namespace HealthRunner
         {
             InitializeComponent();
 
-            // Establecer los placeholders iniciales
             SetPlaceholder(txtNombre, "Ingrese su nombre completo");
             SetPlaceholder(txtCorreo, "Ingrese su correo electrónico");
             SetPlaceholder(txtPassword, "Cree una contraseña");
             SetPlaceholder(txtConfirmar, "Confirme su contraseña");
             SetPlaceholder(txtTelefono, "Ingrese su número telefónico");
 
-            // 🔹 Cargar niveles de actividad
             cmbNivel.Items.Clear();
             cmbNivel.Items.Add("Seleccione su nivel de actividad");
             cmbNivel.Items.Add("Principiante");
@@ -32,7 +32,6 @@ namespace HealthRunner
             cmbNivel.Items.Add("Avanzado");
             cmbNivel.SelectedIndex = 0;
 
-            // 🔹 Cargar géneros
             cmbGenero.Items.Clear();
             cmbGenero.Items.Add("Seleccione su género");
             cmbGenero.Items.Add("Masculino");
@@ -40,13 +39,11 @@ namespace HealthRunner
             cmbGenero.Items.Add("Otro");
             cmbGenero.SelectedIndex = 0;
 
-            // 🔹 Quita el foco inicial al cargar
             this.Shown += FrmInicio_Shown;
         }
 
         private void FrmRegistro_Load(object sender, EventArgs e)
         {
-            // Reestablecer placeholders (por seguridad visual)
             SetPlaceholder(txtNombre, "Ingrese su nombre completo");
             SetPlaceholder(txtCorreo, "Ingrese su correo electrónico");
             SetPlaceholder(txtPassword, "Cree una contraseña");
@@ -56,11 +53,9 @@ namespace HealthRunner
 
         private void FrmInicio_Shown(object sender, EventArgs e)
         {
-            // Truco para evitar foco automático al abrir el formulario
             BeginInvoke((Action)(() => { this.ActiveControl = null; }));
         }
 
-        // 🔹 Método reutilizable para placeholders
         private void SetPlaceholder(TextBox txt, string placeholder)
         {
             txt.Text = placeholder;
@@ -94,7 +89,6 @@ namespace HealthRunner
                 txt.UseSystemPasswordChar = false;
         }
 
-        // 🔹 Método recursivo para limpiar todos los controles del formulario
         private void LimpiarControles(Control contenedor)
         {
             foreach (Control ctrl in contenedor.Controls)
@@ -107,7 +101,7 @@ namespace HealthRunner
                 else if (ctrl is ComboBox cmb)
                 {
                     if (cmb.Items.Count > 0)
-                        cmb.SelectedIndex = 0; // vuelve al primer ítem ("Seleccione su ...")
+                        cmb.SelectedIndex = 0;
                 }
                 else if (ctrl is CheckBox chk)
                 {
@@ -118,18 +112,15 @@ namespace HealthRunner
                     dtp.Value = DateTime.Now;
                 }
 
-                // 🔁 Si el control tiene más controles dentro, limpia también esos
                 if (ctrl.HasChildren)
                     LimpiarControles(ctrl);
             }
         }
 
-        // 🔹 Botón LIMPIAR
         private void btnLimpiar_Click_1(object sender, EventArgs e)
         {
             LimpiarControles(this);
 
-            // Reaplicar placeholders
             SetPlaceholder(txtNombre, "Ingrese su nombre completo");
             SetPlaceholder(txtCorreo, "Ingrese su correo electrónico");
             SetPlaceholder(txtPassword, "Cree una contraseña");
@@ -142,7 +133,6 @@ namespace HealthRunner
                             MessageBoxIcon.Information);
         }
 
-        // 🔹 Botón VOLVER
         private void btnVolver_Click_1(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -159,10 +149,8 @@ namespace HealthRunner
             }
         }
 
-        // 🔹 Botón REGISTRAR
         private void btnRegistrar_Click_1(object sender, EventArgs e)
         {
-            // Validaciones
             if (string.IsNullOrWhiteSpace(txtNombre.Text) || txtNombre.Text == "Ingrese su nombre completo")
             {
                 MessageBox.Show("Debe ingresar su nombre completo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -232,29 +220,44 @@ namespace HealthRunner
                 return;
             }
 
-            // Crear objeto Usuario (POO)
-            Usuario nuevoUsuario = new Usuario()
+            try
             {
-                NombreCompleto = txtNombre.Text,
-                Correo = txtCorreo.Text,
-                FechaNacimiento = dateTimeFecha.Value,
-                NivelActividad = cmbNivel.SelectedItem.ToString(),
-                Genero = cmbGenero.SelectedItem.ToString(),
-                Telefono = txtTelefono.Text,
-                Contrasena = txtPassword.Text
-            };
+                using (SqlConnection cn = ConexionDB.Instancia.ObtenerConexion())
+                {
+                    string query = @"INSERT INTO Usuarios
+                                    (NombreCompleto, CorreoElectronico, Contrasena, 
+                                     FechaNacimiento, NivelActividad, Genero, Telefono, IdRol)
+                                     VALUES (@nombre, @correo, @pass,  @fecha, @nivel, @genero, @tel, 2)";
 
-            // Confirmación visual
-            MessageBox.Show($"Usuario {nuevoUsuario.NombreCompleto} registrado correctamente.",
-                            "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    using (SqlCommand cmd = new SqlCommand(query, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
+                        cmd.Parameters.AddWithValue("@correo", txtCorreo.Text);
+                        cmd.Parameters.AddWithValue("@pass", txtPassword.Text);
+                      //  cmd.Parameters.AddWithValue("@confirma", txtConfirmar.Text);
+                        cmd.Parameters.AddWithValue("@fecha", dateTimeFecha.Value);
+                        cmd.Parameters.AddWithValue("@nivel", cmbNivel.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@genero", cmbGenero.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@tel", txtTelefono.Text);
 
-            // TODO: Integrar con UsuarioRepository para guardar en SQL Server
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Usuario registrado correctamente ✅",
+                                    "HealthRunner",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al registrar el usuario:\n" + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void pnlRegistro_Paint(object sender, PaintEventArgs e)
         {
-            // (Opcional) Personalización visual del panel
         }
     }
 }
-

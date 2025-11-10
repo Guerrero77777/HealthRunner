@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HealthRunner.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,156 +14,210 @@ namespace HealthRunner.Administrador
 {
     public partial class FrmPanelAdmin : Form
     {
-        string connectionString = "Data Source=localhost;Initial Catalog=HealthRunnerDB;Integrated Security=True";
-
         public FrmPanelAdmin()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.ActiveControl = null;
+
+            // Asegura que los eventos estén conectados
+            this.Load += new System.EventHandler(this.FrmPanelAdmin_Load);
+            this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
         }
 
         private void FrmPanelAdmin_Load(object sender, EventArgs e)
         {
+            ConfigurarControles();
             CargarUsuarios();
         }
 
-        // 🔹 Cargar lista de usuarios en el DataGridView
-        private void CargarUsuarios()
+        private void ConfigurarControles()
+        {
+            // Habilita todos los botones
+            btnBuscar.Enabled = true;
+            btnVerdetalle.Enabled = true;
+            btnAgregar.Enabled = true;
+            btnEditar.Enabled = true;
+            btnEliminar.Enabled = true;
+            btnActualizar.Enabled = true;
+            btnVolver.Enabled = true;
+            txtBuscar.Enabled = true;
+
+            // Ajustes del DataGridView
+            dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvUsuarios.MultiSelect = false;
+            dgvUsuarios.ReadOnly = true;
+        }
+
+        private void CargarUsuarios(string filtro = "")
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection cn = ConexionDB.Instancia.ObtenerConexion())
                 {
-                    conn.Open();
+                    // Consulta: muestra todos los usuarios (incluyendo administradores)
                     string query = @"
-                        SELECT u.IdUsuario, u.NombreCompleto AS NOMBRE, 
-                               u.CorreoElectronico AS CORREO,
-                               r.NombreRol AS ROL,
-                               u.Genero AS GÉNERO,
-                               u.Telefono AS TELÉFONO
+                        SELECT 
+                            u.NombreCompleto AS NOMBRE,
+                            u.CorreoElectronico AS CORREO,
+                            r.NombreRol AS ROL,
+                            u.Genero AS GENERO,
+                            u.Telefono AS TELEFONO
                         FROM Usuarios u
-                        INNER JOIN Roles r ON u.IdRol = r.IdRol";
+                        LEFT JOIN Roles r ON u.IdRol = r.IdRol";
 
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    // Si hay filtro, se aplica a nombre o correo
+                    if (!string.IsNullOrEmpty(filtro))
+                    {
+                        query += " WHERE u.NombreCompleto LIKE @filtro OR u.CorreoElectronico LIKE @filtro";
+                    }
+
+                    SqlCommand cmd = new SqlCommand(query, cn);
+
+                    if (!string.IsNullOrEmpty(filtro))
+                    {
+                        cmd.Parameters.AddWithValue("@filtro", $"%{filtro}%");
+                    }
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
+
+                    // Limpia antes de asignar para evitar duplicaciones
+                    dgvUsuarios.DataSource = null;
+                    dgvUsuarios.Rows.Clear();
+                    dgvUsuarios.Columns.Clear();
+
                     dgvUsuarios.DataSource = dt;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar los usuarios:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar los usuarios: {ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }      
 
-        private void btnVerdetalle_Click(object sender, EventArgs e)
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+            // Búsqueda en tiempo real mientras el usuario escribe
+            CargarUsuarios(txtBuscar.Text.Trim());
+        }  
+              
+     
+
+        private void btnVerdetalle_Click_1(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
-                MessageBox.Show("Seleccione un usuario primero.", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                string nombre = dgvUsuarios.SelectedRows[0].Cells["NOMBRE"].Value.ToString();
+                string correo = dgvUsuarios.SelectedRows[0].Cells["CORREO"].Value.ToString();
+                string rol = dgvUsuarios.SelectedRows[0].Cells["ROL"].Value.ToString();
+                string genero = dgvUsuarios.SelectedRows[0].Cells["GENERO"].Value.ToString();
+                string telefono = dgvUsuarios.SelectedRows[0].Cells["TELEFONO"].Value.ToString();
+
+                string mensaje = $"👤 Nombre: {nombre}\n📧 Correo: {correo}\n🎯 Rol: {rol}\n⚧ Género: {genero}\n📞 Teléfono: {telefono}";
+                MessageBox.Show(mensaje, "Detalles del Usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            string nombre = dgvUsuarios.SelectedRows[0].Cells["NOMBRE"].Value.ToString();
-            string correo = dgvUsuarios.SelectedRows[0].Cells["CORREO"].Value.ToString();
-            string rol = dgvUsuarios.SelectedRows[0].Cells["ROL"].Value.ToString();
-            string genero = dgvUsuarios.SelectedRows[0].Cells["GÉNERO"].Value.ToString();
-            string telefono = dgvUsuarios.SelectedRows[0].Cells["TELÉFONO"].Value.ToString();
-
-            MessageBox.Show($"👤 Nombre: {nombre}\n📧 Correo: {correo}\n🎭 Rol: {rol}\n⚧ Género: {genero}\n📱 Teléfono: {telefono}",
-                            "Detalle del usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+            {
+                MessageBox.Show("Seleccione un usuario para ver los detalles.",
+                                "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void btnAgregar_Click_1(object sender, EventArgs e)
         {
             FrmRegistroAdmin frm = new FrmRegistroAdmin();
             frm.Show();
             this.Hide();
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnEditar_Click_1(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
-                MessageBox.Show("Seleccione un usuario para editar.", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                string correo = dgvUsuarios.SelectedRows[0].Cells["CORREO"].Value.ToString();
 
-            int idUsuario = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["IdUsuario"].Value);
-            string nuevoTelefono = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el nuevo número de teléfono:", "Editar Usuario");
-
-            if (string.IsNullOrWhiteSpace(nuevoTelefono)) return;
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                DialogResult result = MessageBox.Show($"¿Desea editar la información de {correo}?",
+                                                      "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
                 {
-                    conn.Open();
-                    string query = "UPDATE Usuarios SET Telefono = @telefono WHERE IdUsuario = @id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@telefono", nuevoTelefono);
-                    cmd.Parameters.AddWithValue("@id", idUsuario);
-                    cmd.ExecuteNonQuery();
+                    FrmRegistroAdmin frm = new FrmRegistroAdmin();
+                    frm.Show();
+                    this.Hide();
                 }
-
-                MessageBox.Show("✅ Usuario actualizado correctamente.", "Editar", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CargarUsuarios();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Error al editar usuario:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Seleccione un usuario para editar.",
+                                "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void btnEliminar_Click_1(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
-                MessageBox.Show("Seleccione un usuario para eliminar.", "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                string correo = dgvUsuarios.SelectedRows[0].Cells["CORREO"].Value.ToString();
 
-            DialogResult result = MessageBox.Show("¿Deseas eliminar este usuario?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
-            {
-                int idUsuario = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["IdUsuario"].Value);
-
-                try
+                DialogResult result = MessageBox.Show($"¿Desea eliminar al usuario {correo}?",
+                                                      "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
                 {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    try
                     {
-                        conn.Open();
-                        string query = "DELETE FROM Usuarios WHERE IdUsuario = @id";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", idUsuario);
-                        cmd.ExecuteNonQuery();
-                    }
+                        using (SqlConnection cn = ConexionDB.Instancia.ObtenerConexion())
+                        {
+                            string query = "DELETE FROM Usuarios WHERE CorreoElectronico = @correo";
+                            SqlCommand cmd = new SqlCommand(query, cn);
+                            cmd.Parameters.AddWithValue("@correo", correo);
+                            cmd.ExecuteNonQuery();
+                        }
 
-                    MessageBox.Show("🗑️ Usuario eliminado correctamente.", "Eliminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CargarUsuarios();
+                        MessageBox.Show("Usuario eliminado correctamente.",
+                                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        CargarUsuarios();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al eliminar: {ex.Message}",
+                                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar usuario:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un usuario para eliminar.",
+                                "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void btnActualizar_Click(object sender, EventArgs e)
+        private void btnActualizar_Click_1(object sender, EventArgs e)
         {
             CargarUsuarios();
-            MessageBox.Show("🔄 Datos actualizados correctamente.", "Actualizar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Lista de usuarios actualizada correctamente.",
+                            "HealthRunner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnVolver_Click(object sender, EventArgs e)
+        private void btnVolver_Click_1(object sender, EventArgs e)
         {
-            FrmInicio frmInicio = new FrmInicio();
-            frmInicio.Show();
-            this.Hide();
+            DialogResult result = MessageBox.Show("¿Desea volver al inicio de sesión?",
+                                                  "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                FrmInicio frm = new FrmInicio();
+                frm.Show();
+                this.Hide();
+            }
         }
 
-        private void FrmPanelAdmin_Load_1(object sender, EventArgs e)
+        private void btnBuscar_Click_1(object sender, EventArgs e)
         {
-
+            string filtro = txtBuscar.Text.Trim();
+            CargarUsuarios(filtro);
         }
     }
 }

@@ -30,7 +30,7 @@
         {
             this.pnlRegistro = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnAtras = new System.Windows.Forms.Button();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
@@ -66,7 +66,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnAtras);
+            this.panel1.Controls.Add(this.btnVolver);
             this.panel1.Controls.Add(this.btnActualizar);
             this.panel1.Controls.Add(this.btnEliminar);
             this.panel1.Controls.Add(this.btnEditar);
@@ -77,17 +77,18 @@
             this.panel1.Size = new System.Drawing.Size(174, 295);
             this.panel1.TabIndex = 3;
             // 
-            // btnAtras
+            // btnVolver
             // 
-            this.btnAtras.BackColor = System.Drawing.Color.LightGray;
-            this.btnAtras.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAtras.ForeColor = System.Drawing.Color.White;
-            this.btnAtras.Location = new System.Drawing.Point(16, 217);
-            this.btnAtras.Name = "btnAtras";
-            this.btnAtras.Size = new System.Drawing.Size(130, 35);
-            this.btnAtras.TabIndex = 7;
-            this.btnAtras.Text = "Volver";
-            this.btnAtras.UseVisualStyleBackColor = false;
+            this.btnVolver.BackColor = System.Drawing.Color.LightGray;
+            this.btnVolver.Font = new System.Drawing.Font("Segoe UI", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVolver.ForeColor = System.Drawing.Color.White;
+            this.btnVolver.Location = new System.Drawing.Point(16, 217);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(130, 35);
+            this.btnVolver.TabIndex = 7;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = false;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click_1);
             // 
             // btnActualizar
             // 
@@ -100,7 +101,7 @@
             this.btnActualizar.TabIndex = 6;
             this.btnActualizar.Text = "Actualizar";
             this.btnActualizar.UseVisualStyleBackColor = false;
-            this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click);
+            this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click_1);
             // 
             // btnEliminar
             // 
@@ -113,7 +114,7 @@
             this.btnEliminar.TabIndex = 5;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click_1);
             // 
             // btnEditar
             // 
@@ -126,7 +127,7 @@
             this.btnEditar.TabIndex = 4;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = false;
-            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click_1);
             // 
             // btnAgregar
             // 
@@ -139,7 +140,7 @@
             this.btnAgregar.TabIndex = 3;
             this.btnAgregar.Text = "Agregar";
             this.btnAgregar.UseVisualStyleBackColor = false;
-            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click_1);
             // 
             // btnVerdetalle
             // 
@@ -152,7 +153,7 @@
             this.btnVerdetalle.TabIndex = 2;
             this.btnVerdetalle.Text = "Ver Detalle";
             this.btnVerdetalle.UseVisualStyleBackColor = false;
-            this.btnVerdetalle.Click += new System.EventHandler(this.btnVerdetalle_Click);
+            this.btnVerdetalle.Click += new System.EventHandler(this.btnVerdetalle_Click_1);
             // 
             // dgvUsuarios
             // 
@@ -205,6 +206,7 @@
             this.btnBuscar.TabIndex = 1;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click_1);
             // 
             // txtBuscar
             // 
@@ -247,7 +249,6 @@
             this.Name = "FrmPanelAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmPanelAdmin";
-            this.Load += new System.EventHandler(this.FrmPanelAdmin_Load_1);
             this.pnlRegistro.ResumeLayout(false);
             this.pnlRegistro.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -272,7 +273,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn GÉNERO;
         private System.Windows.Forms.DataGridViewTextBoxColumn TELÉFONO;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnAtras;
+        private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnEditar;
