@@ -109,22 +109,20 @@ namespace HealthRunner
                     return;
                 }
 
-                if (pasos > 20000 || km > 15 || calorias > 1200 || frecuencia > 120)
+                // Regla 10: Límites de seguridad
+                if (pasos > 20000 || km > 15 || calorias > 1200 || frecuencia > 150)
                 {
-                    MessageBox.Show("⚠️ Estás excediendo los límites recomendados. Evita el sobreesfuerzo para cuidar tu salud.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("⚠️ Evita el sobreesfuerzo para cuidar tu salud.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 double progreso = CalcularProgreso(pasos, km, calorias, frecuencia);
-
                 string nivelAnterior = txtNivel.Text?.Trim() ?? "Principiante";
                 string nivelCalculado = NivelPorProgreso(progreso);
 
-                // 🔹 Actualiza automáticamente el nivel visual y el texto, incluso antes de guardar
                 txtNivel.Text = nivelCalculado;
                 lblNivelActual.Text = $"Nivel actual: {txtNivel.Text}";
 
-                // 🔹 Si hay cambio de nivel, actualiza también la base de datos
                 if (!string.Equals(nivelCalculado, nivelAnterior, StringComparison.OrdinalIgnoreCase))
                 {
                     bool actualizado = ActualizarNivelUsuario(idUsuario, nivelCalculado);
@@ -176,7 +174,6 @@ namespace HealthRunner
             try { progressExperiencia.Value = progresoEntero; } catch { progressExperiencia.Value = Math.Max(0, Math.Min(100, progresoEntero)); }
             lblProgreso.Text = $"Progreso: {progresoEntero}%";
 
-            // 🔹 Actualiza el nivel en tiempo real, sin esperar al botón
             string nivelCalculado = NivelPorProgreso(progresoEntero);
             txtNivel.Text = nivelCalculado;
             lblNivelActual.Text = $"Nivel actual: {nivelCalculado}";
@@ -186,8 +183,8 @@ namespace HealthRunner
 
         private string NivelPorProgreso(double progreso)
         {
-            if (progreso > 95.0) return "Avanzado";
-            if (progreso > 70.0) return "Intermedio";
+            if (progreso >= 95.0) return "Avanzado";
+            if (progreso >= 70.0) return "Intermedio";
             return "Principiante";
         }
 
@@ -195,28 +192,51 @@ namespace HealthRunner
         {
             LimpiarInsignias();
 
-            if (pasos >= 9000 && km >= 6.0 && calorias >= 450 && frecuencia <= 100)
+            // Regla 1: ORO
+            if (pasos >= 9000 && pasos <= 10000 && km >= 6 && km <= 15 && calorias >= 450 && calorias <= 750 && frecuencia >= 80 && frecuencia <= 100)
             {
                 picOro.Visible = true;
-                MessageBox.Show("🥇 Excelente — insignia ORO otorgada.", "Insignia Oro", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("🥇 Excelente — Insignia ORO otorgada.", "Insignia Oro", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return "Oro";
             }
 
-            if (pasos >= 7000 && km >= 4.0 && calorias >= 300 && frecuencia <= 120)
+            // Regla 2: PLATA
+            if (pasos >= 7000 && pasos <= 8999 && km >= 4 && km <= 5 && calorias >= 300 && calorias <= 349 && frecuencia >= 70 && frecuencia <= 79)
             {
                 picPlata.Visible = true;
-                MessageBox.Show("🥈 Buen trabajo — insignia PLATA otorgada.", "Insignia Plata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("🥈 Muy bien — Insignia PLATA otorgada.", "Insignia Plata", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return "Plata";
             }
 
-            if (pasos >= 4000 && km >= 2.0 && calorias >= 150 && frecuencia <= 130)
+            // Regla 3: BRONCE
+            if (pasos >= 4000 && pasos <= 6999 && km >= 1 && km <= 3 && calorias < 259 && frecuencia < 60)
             {
                 picBronce.Visible = true;
-                MessageBox.Show("🥉 Has obtenido una insignia BRONCE. ¡Sigue mejorando!", "Insignia Bronce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("🥉 Buen esfuerzo — Insignia BRONCE otorgada.", "Insignia Bronce", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return "Bronce";
             }
 
-            MessageBox.Show("No alcanzaste PI aún. ¡No te rindas, cada paso cuenta!", "Motivación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Regla 4: Sin insignia
+            if (pasos < 4000 && calorias < 150)
+            {
+                MessageBox.Show("💪 No te rindas, cada paso cuenta.", "Motivación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return "Ninguna";
+            }
+
+            // Regla 5: Frecuencia Alta
+            if (frecuencia > 120)
+            {
+                MessageBox.Show("⚠️ ¡Cuidado! No te sobreesfuerces.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return "Ninguna";
+            }
+
+            // Regla 6: Desempeño saludable
+            if (km >= 10 && calorias >= 900)
+            {
+                MessageBox.Show("🏆 Excelente desempeño, mantén el ritmo saludable.", "Desempeño Saludable", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return "Oro";
+            }
+
             return "Ninguna";
         }
 
