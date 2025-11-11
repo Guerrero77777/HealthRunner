@@ -27,7 +27,6 @@ namespace HealthRunner
             LimpiarInsignias();
         }
 
-        // Carga los datos básicos del usuario (incluye NivelActividad)
         private void CargarDatosDesdeBD()
         {
             try
@@ -88,12 +87,10 @@ namespace HealthRunner
             picBronce.Visible = false;
         }
 
-        // Botón actualizar: calcula progreso, evalúa PI, actualiza nivel (sube/baja), guarda estadística
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validaciones de entrada
                 if (string.IsNullOrWhiteSpace(txtPasos.Text) ||
                     string.IsNullOrWhiteSpace(txtKilometros.Text) ||
                     string.IsNullOrWhiteSpace(txtCalorias.Text) ||
@@ -112,48 +109,38 @@ namespace HealthRunner
                     return;
                 }
 
-                // Reglas de sobreesfuerzo (bloqueante)
                 if (pasos > 20000 || km > 15 || calorias > 1200 || frecuencia > 120)
                 {
                     MessageBox.Show("⚠️ Estás excediendo los límites recomendados. Evita el sobreesfuerzo para cuidar tu salud.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // 1) Calcular progreso (%) y actualizar UI
                 double progreso = CalcularProgreso(pasos, km, calorias, frecuencia);
 
-                // 2) Determinar nivel por progreso (permite subida y bajada)
                 string nivelAnterior = txtNivel.Text?.Trim() ?? "Principiante";
                 string nivelCalculado = NivelPorProgreso(progreso);
 
-                // 3) Si hay cambio de nivel (suba o baja) actualizar Usuarios.NivelActividad y la UI
+                // 🔹 Actualiza automáticamente el nivel visual y el texto, incluso antes de guardar
+                txtNivel.Text = nivelCalculado;
+                lblNivelActual.Text = $"Nivel actual: {txtNivel.Text}";
+
+                // 🔹 Si hay cambio de nivel, actualiza también la base de datos
                 if (!string.Equals(nivelCalculado, nivelAnterior, StringComparison.OrdinalIgnoreCase))
                 {
                     bool actualizado = ActualizarNivelUsuario(idUsuario, nivelCalculado);
                     if (actualizado)
                     {
-                        txtNivel.Text = nivelCalculado;
-                        lblNivelActual.Text = $"Nivel actual: {txtNivel.Text}";
                         MessageBox.Show($"Tu nivel ha cambiado a: {nivelCalculado}", "Nivel actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        // aunque no se actualice en Usuarios por algún motivo, reflejar en UI para guardar el registro
-                        txtNivel.Text = nivelCalculado;
-                        lblNivelActual.Text = $"Nivel actual: {txtNivel.Text}";
                     }
                 }
 
-                // 4) Evaluar y mostrar la insignia (una sola)
                 string piAsignada = EvaluarMostrarInsignia(pasos, km, calorias, frecuencia);
 
-                // 5) Obtener últimos contadores y luego incrementar el que corresponda
                 (int contOro, int contPlata, int contBronce) = ObtenerContadores(idUsuario);
                 if (piAsignada == "Oro") contOro++;
                 else if (piAsignada == "Plata") contPlata++;
                 else if (piAsignada == "Bronce") contBronce++;
 
-                // 6) Guardar estadística exactamente con los campos solicitados (incluye Nivel)
                 bool guardado = GuardarEstadistica(pasos, km, calorias, frecuencia, contOro, contPlata, contBronce, txtNivel.Text);
 
                 if (guardado)
@@ -171,19 +158,17 @@ namespace HealthRunner
             }
         }
 
-        // Calcula el progreso (%) como promedio de 4 métricas, con límites y normalización
         private double CalcularProgreso(int pasos, double km, int calorias, int frecuencia)
         {
-            // Referencias para 100%
-            const double refPasos = 10000.0;   // 10k pasos = 100%
-            const double refKm = 7.0;          // 7 km = 100%
-            const double refCal = 500.0;       // 500 cal = 100%
-            const double refFreq = 90.0;       // 90 bpm = 100% referencia (se usa proporcional)
+            const double refPasos = 10000.0;
+            const double refKm = 7.0;
+            const double refCal = 500.0;
+            const double refFreq = 90.0;
 
             double pctPasos = Math.Min(100.0, pasos / refPasos * 100.0);
             double pctKm = Math.Min(100.0, km / refKm * 100.0);
             double pctCal = Math.Min(100.0, calorias / refCal * 100.0);
-            double pctFreq = Math.Min(100.0, (frecuencia / refFreq) * 100.0); // si frecuencia sube, puede pasar 100, clampado
+            double pctFreq = Math.Min(100.0, (frecuencia / refFreq) * 100.0);
 
             double progreso = (pctPasos + pctKm + pctCal + pctFreq) / 4.0;
             int progresoEntero = (int)Math.Round(Math.Max(0, Math.Min(100, progreso)));
@@ -191,10 +176,14 @@ namespace HealthRunner
             try { progressExperiencia.Value = progresoEntero; } catch { progressExperiencia.Value = Math.Max(0, Math.Min(100, progresoEntero)); }
             lblProgreso.Text = $"Progreso: {progresoEntero}%";
 
+            // 🔹 Actualiza el nivel en tiempo real, sin esperar al botón
+            string nivelCalculado = NivelPorProgreso(progresoEntero);
+            txtNivel.Text = nivelCalculado;
+            lblNivelActual.Text = $"Nivel actual: {nivelCalculado}";
+
             return progresoEntero;
         }
 
-        // Decide el nivel en base al progreso (permite subida y bajada)
         private string NivelPorProgreso(double progreso)
         {
             if (progreso > 95.0) return "Avanzado";
@@ -202,13 +191,10 @@ namespace HealthRunner
             return "Principiante";
         }
 
-        // Evalúa y muestra exactamente una insignia; devuelve "Oro"/"Plata"/"Bronce" o "Ninguna"
         private string EvaluarMostrarInsignia(int pasos, double km, int calorias, int frecuencia)
         {
             LimpiarInsignias();
 
-            // Reglas de negocio para PI (umbrales absolutos)
-            // Oro
             if (pasos >= 9000 && km >= 6.0 && calorias >= 450 && frecuencia <= 100)
             {
                 picOro.Visible = true;
@@ -216,7 +202,6 @@ namespace HealthRunner
                 return "Oro";
             }
 
-            // Plata
             if (pasos >= 7000 && km >= 4.0 && calorias >= 300 && frecuencia <= 120)
             {
                 picPlata.Visible = true;
@@ -224,7 +209,6 @@ namespace HealthRunner
                 return "Plata";
             }
 
-            // Bronce
             if (pasos >= 4000 && km >= 2.0 && calorias >= 150 && frecuencia <= 130)
             {
                 picBronce.Visible = true;
@@ -232,12 +216,10 @@ namespace HealthRunner
                 return "Bronce";
             }
 
-            // Ninguna
             MessageBox.Show("No alcanzaste PI aún. ¡No te rindas, cada paso cuenta!", "Motivación", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return "Ninguna";
         }
 
-        // Obtiene últimos contadores de EstadisticasSalud (TOP 1 por FechaRegistro)
         private (int contOro, int contPlata, int contBronce) ObtenerContadores(int idUsuario)
         {
             int oro = 0, plata = 0, bronce = 0;
@@ -270,15 +252,11 @@ namespace HealthRunner
                     }
                 }
             }
-            catch
-            {
-                // si no hay registros, retornar 0s
-            }
+            catch { }
 
             return (oro, plata, bronce);
         }
 
-        // Guarda EN LA BD solo las columnas solicitadas (incluye Nivel)
         private bool GuardarEstadistica(int pasos, double km, int calorias, int frecuencia, int contOro, int contPlata, int contBronce, string nivel)
         {
             try
@@ -302,7 +280,6 @@ namespace HealthRunner
                         cmd.Parameters.AddWithValue("@plata", contPlata);
                         cmd.Parameters.AddWithValue("@bronce", contBronce);
                         cmd.Parameters.AddWithValue("@nivel", nivel ?? (object)DBNull.Value);
-
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -316,7 +293,6 @@ namespace HealthRunner
             }
         }
 
-        // Actualiza el nivel en la tabla Usuarios; devuelve true si ejecutó correctamente
         private bool ActualizarNivelUsuario(int idUsuario, string nuevoNivel)
         {
             try
@@ -339,13 +315,11 @@ namespace HealthRunner
             }
         }
 
-        // Placeholder: historial
         private void btnHistorial_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Historial de actividad en desarrollo.", "HealthRunner");
         }
 
-        // Cerrar sesión
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("¿Desea cerrar sesión?", "Salir", MessageBoxButtons.YesNo);
